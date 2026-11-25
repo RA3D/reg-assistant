@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: reg-assistant
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/regassistant
+    username: postgres
+    password: postgres
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.0
+      embedding:
+        options:
+          model: text-embedding-3-small
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536   # text-embedding-3-small
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+reg-assistant:
+  retrieval:
+    top-k: 5
+    similarity-threshold: 0.4
